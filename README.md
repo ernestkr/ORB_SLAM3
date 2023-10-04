@@ -1,3 +1,87 @@
+# INTRODUCTION
+
+This repo is taken from the original version of ORB_SLAM3 by UZ-SLAMlab at https://github.com/UZ-SLAMLab/ORB_SLAM3. The purpose of this repo is to provide a clear step-by-step guideline to setup and install ORB_SLAM3, such that it can be compiled and executed without problem on a fresh Ubuntu 20.04 system. Opencv 4.8 is used in this compilation. We hope that this repo will make it easier for anyone who want to have a quick setup and run ORB_SLAM3 algorithm with available public dataset. The installation steps to follow is given below:
+
+Preparation
+```
+cd ~
+sudo apt update
+sudo apt install git
+sudo apt upgrade
+
+mkdir orbslam
+cd orbslam
+```
+
+Install C++ 11 library
+```
+sudo apt install build-essential
+```
+
+Install Pangolin
+```
+git clone --recursive https://github.com/stevenlovegrove/Pangolin.git
+cd Pangolin/scripts
+
+./install_prerequisites.sh recommended
+
+cd ..
+cmake -B build
+cmake --build build
+cd ..
+```
+
+Install OpenCV
+```
+mkdir opencv
+cd opencv
+
+sudo apt install libgtk-3-dev tesseract-ocr libtesseract-dev hdf5-tools libhdf5-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libboost-dev libssl-dev libboost-serialization-dev
+
+git clone -b 4.x https://github.com/opencv/opencv.git
+git clone -b 4.x https://github.com/opencv/opencv_contrib.git
+
+mkdir -p build && cd build
+
+cmake -DOPENCV_GENERATE_PKGCONFIG=ON -DWITH_GTK=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
+
+cmake --build .
+sudo make install
+
+cd ../..
+```
+
+Install packets required by ORBSlam3
+```
+sudo apt install libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev libusb-1.0-0-dev
+git clone https://github.com/IntelRealSense/librealsense
+cd librealsense
+mkdir -p build && cd build
+cmake .. -DFORCE_RSUSB_BACKEND=true -DCMAKE_BUILD_TYPE=release
+make –j1
+sudo make install
+cd ../..
+```
+
+Install ORBSlam3, download sample dataset, and run a monocular example
+```
+git clone https://github.com/ernestkr/ORB_SLAM3.git
+
+cd ORB_SLAM3
+chmod +x build.sh
+
+sudo ./build.sh
+
+cd Examples/Monocular
+mkdir TUMdata && cd TUMdata
+wget https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_xyz.tgz
+tar -xvf rgbd_dataset_freiburg1_xyz.tgz
+
+cd ../../..
+
+./Examples/Monocular/mono_tum Vocabulary/ORBvoc.txt Examples/Monocular/TUM1.yaml Examples/Monocular/TUMdata/rgbd_dataset_freiburg1_xyz
+```
+
 # ORB-SLAM3
 
 ### V1.0, December 22th, 2021
