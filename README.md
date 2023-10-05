@@ -72,14 +72,15 @@ chmod +x build.sh
 
 sudo ./build.sh
 
-cd Examples/Monocular
-mkdir TUMdata && cd TUMdata
-wget https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_xyz.tgz
-tar -xvf rgbd_dataset_freiburg1_xyz.tgz
-
+cd Examples/Stereo
+mkdir Dataset
+cd Dataset
+wget http://robotics.ethz.ch/~asl-datasets/ijrr_euroc_mav_dataset/machine_hall/MH_01_easy/MH_01_easy.zip
+unzip MH_01_easy.zip
 cd ../../..
 
-./Examples/Monocular/mono_tum Vocabulary/ORBvoc.txt Examples/Monocular/TUM1.yaml Examples/Monocular/TUMdata/rgbd_dataset_freiburg1_xyz
+./Examples/Stereo/stereo_euroc ./Vocabulary/ORBvoc.txt ./Examples/Stereo/EuRoC.yaml ./Examples/Stereo/Dataset ./Examples/Stereo/EuRoC_TimeStamps/MH01.txt dataset-MH01_stereo
+
 ```
 
 # ORB-SLAM3
